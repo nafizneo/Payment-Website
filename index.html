@@ -1,715 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Random Battle</title>
-	<link rel="stylesheet" href="style.css">
-	<!--Favicont Icon-->
-	<link rel="shortcut icon" href="img/pc.png" type="image/x-icon">
-	<script src="https://kit.fontawesome.com/23ca19cfd5.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Evolution - CS Demo</title>
+	
+    <style>
+        :root {
+            --primary: #70c5ce;
+            --ui-bg: rgba(0, 0, 0, 0.7);
+            --text: white;
+            --accent: #f1c40f;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: var(--text);
+        }
+        #game-container {
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 6px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            background: var(--primary);
+        }
+        .ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+        }
+        .hud {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            pointer-events: none;
+            font-size: 28px;
+            font-weight: 800;
+            text-shadow: 2px 2px 0 #000;
+            z-index: 20;
+        }
+        .menu-overlay {
+            background: var(--ui-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            pointer-events: all;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .hidden { display: none !important; }
+        
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .tap-indicator {
+            font-size: 20px;
+            color: var(--accent);
+            margin-top: 20px;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            background: #ff9f43;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #cc8135;
+            transition: all 0.1s;
+        }
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #cc8135;
+        }
+        .ai-badge {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: #ee5253;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
 </head>
 <body>
-	
 
-	<!--Home Page-->
-	<header>
-
-		<div class="topest-bar">
-
-			<div class="wraper">
-				<div class="container flex-container">
-				<div class="company-logo">
-
-					<img class="company-logo" src="img/logo.png" alt="logo"/>
-
-				</div>
-
-				<div class="navigation-bar">
-
-					<ul class="sub-nav-items">
-
-						<li><a href="#">Home</a></li>
-						<li><a href="#abc">About Us</a></li>
-						<li><a href="#ser">Service</a></li>
-						<li><a href="#last">Process</a></li>
-						<li><a href="#bot">Download</a></li>
-
-					</ul>
-
-				</div>
-
-				
-
-				<div class="get-started-btn-div">
-
-					<button class="get-started-real-btn">Get Started</button>
-
-				</div>
-
-				<div class="toggle">
-
-					<a id="Mobile_Menu" href="#">
-					<i class="fas fa-bars"></i>
-					</a>
-					
-				</div>
-
-				</div>
-			</div>
-
-			<div class="wraper">
-
-				<div class="container flex-container-2569">
-
-					<div class="left-home-screen">
-
-						<div class="text-home-right-screen">
-
-							<h2><span>EASIEST</span> BETTLEST METHOD EVER</h2>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.<span class="span-class">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis suscipit mollitia laborum earum eos. Porro quo distinctio, veniam cum odio soluta enim rem voluptas, id neque laboriosam odit quis exercitationem delectus totam numquam explicabo adipisci.</span></p>
-						</div>
-
-						<div class="buttons-home-right-screen">
-
-							<button class="get-started12589">GET STARTED</button>
-							<button class="contact-us25896">CONTACT US</button>
-
-						</div>
-
-					</div>
-
-					<div class="right-home-screen">
-
-						<div class="main-img">
-
-							<img src="img/home-img-big@2x-e1609121743866.png" alt="logo"/>
-
-							<div class="sub-img">
-								<img src="img/Efficiencydark-1.png" alt="logo"/>
-
-							</div>
-
-							<div class="img-des">
-
-								<div class="border_bettle">
-
-									<img src="img/favicon_cloud.png" alt="logo"/>
-									<h2>EASY BATTLE</h2>
-								</div>
-
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-
-			</div>
-		
-		</div>
-
-	</header>
-
-
-	<section class="company-section-different-types">
-
-		<div class="container flex-container-258741po">
-
-			<div class="single-img">
-
-				<img src="img/marketup-logo@2x_1.png" alt="logo"/>
-
-			</div>
-
-			<div class="single-img">
-
-				<img src="img/okfinance-logo@2x.png" alt="logo"/>
-
-			</div>
-
-			<div class="single-img">
-
-				<img src="img/global-trade-logo@2x.png" alt="logo"/>
-
-			</div>
-
-			<div class="single-img">
-
-				<img src="img/starbank-logo@2x.png" alt="logo"/>
-
-			</div>
-
-		</div>
-
-	</section>
-
-	<section id="abc" class="single-phone">
-
-		<div class="container flex-mobile-container">
-
-			<!-- <div class="single-mobile-photo">
-
-				<img src="img/app-mockup-2-a@2x-e1610431074808.png"/>
-
-			</div> -->
-
-			<div class="many_phone_img">
-
-				<img class="del_port" src="img/mobile-1.gif" alt="logo"/>
-					<!--01.png-->
-				<img class="del" src="img/app-mockup-2-a@2x-e1610431074808.png"/>
-
-			</div>
-
-			<div class="right-mobile-mockup-design-description">
-
-					<h2>Manage Everything in Your Hand</h2>
-					<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-
-					<div class="mockup-app-services">
-
-						<div class="single-services25">
-
-							<div class="services-icon">
-
-								<img src="img/pc.png" alt="logo"/>
-
-							</div>					
-							<div class="services-des2580">
-
-								<h4>User Friendly</h4>
-								<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-							</div>					
-
-						</div>
-
-
-						<div class="single-services25">
-
-							<div class="services-icon">
-
-								<img src="img/cog.png" alt="logo"/>
-
-							</div>					
-							<div class="services-des2580">
-
-								<h4>Best Support</h4>
-								<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-							</div>					
-
-						</div>
-
-						<div class="single-services25">
-
-							<div class="services-icon">
-
-								<img src="img/icons8-website-48.png" alt="logo"/>
-
-							</div>					
-							<div class="services-des2580">
-
-								<h4>Secure</h4>
-								<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-							</div>					
-
-						</div>
-
-					</div>
-
-			</div>
-
-		</div>
-
-	</section>
-
-	<section class="about-us">
-
-		<div class="container flex-contianer-2578oi">
-
-			<div class="left-side-img-5874">
-
-				<h2>Enjoy Various Merchant's Promos</h2>				
-				<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-				<button class="get_started_about_us">GET STARTED</button>
-			</div>
-			<div class="main_left_side">
-
-				<div class="right-img-des1458">
-
-					<img src="img/mobile-2.gif"/>
-	
-					
-				</div>
-				<!-- <div class="img-class1">
-
-					<img src="img/analytics.png" alt="logo"/>
-
-				</div>
-
-				<div class="img-class2">
-
-					<img src="img/shopping-icon-home@2x.png" alt="logo"/>
-
-				</div> -->
-			</div>
-			
-
-		</div>
-
-	</section>
-
-	<section class="new_all_phone_in_one">
-
-		<div class="container all_phone_container458fd">
-
-			<div class="top-div-header-phone">
-
-				<h2>A Platform that is Independent</h2>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit totam ipsam asperiores velit quod commodi excepturi quas! Ad illo distinctio accusamus!</p>
-			</div>
-
-			<div class="bottom15-div-header-phone">
-
-				<div class="single-app-image-js">
-
-					<img src="img/RFphone_1.gif" alt="logo"/>
-
-				</div>
-
-				<div class="single-app-image-js">
-
-					<img src="img/RFphone_2.gif" alt="logo"/>
-
-				</div>
-
-				<div class="single-app-image-js">
-
-					<img src="img/RFphone_3.gif" alt="logo"/>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</section>
-
-	<section id="ser" class="complex-sections">
-
-		<div class="container top-flex">
-
-			<div class="top-header-section-748">
-
-				<h2>Our Services</h2>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ipsam voluptas soluta? Cupiditate, excepturi aliquam! Odio, voluptates quisquam adipisci dignissimos voluptatibus vero consequatur harum fugit!</p>
-
-			</div>
-
-			<div class="bottom-header-section-748">
-
-				<div class="sinle-box-per-section">
-
-					<img src="img/pc.png"/>
-					<br/>
-					<h3>Payment Management</h3>					
-					<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-					<a href="#">Learn More</a>
-				</div>
-
-				<div class="sinle-box-per-section">
-
-					<img src="img/pc.png"/>
-					<br/>
-					<h3>Payment Management</h3>					
-					<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-					<a href="#">Learn More</a>
-				</div>
-
-				<div class="sinle-box-per-section">
-
-					<img src="img/pc.png"/>
-					<br/>
-					<h3>Payment Management</h3>					
-					<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-					<a href="#">Learn More</a>
-				</div>
-
-				<div class="sinle-box-per-section">
-
-					<img src="img/pc.png"/>
-					<br/>
-					<h3>Payment Management</h3>					
-					<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-					<a href="#">Learn More</a>
-				</div>
-
-				<div class="sinle-box-per-section">
-
-					<img src="img/pc.png"/>
-					<br/>
-					<h3>Payment Management</h3>					
-					<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-					<a href="#">Learn More</a>
-				</div>
-
-				<div class="sinle-box-per-section">
-
-					<p class="suddent-text">We have a lot of powerful service that you can get. Check for more of our available services in our product.</p>
-
-					<a class="view-btn" href="#">VIEW MORE</a>
-					
-				</div>
-
-			</div>
-
-		</div>
-
-	</section>
-
-	<section class="app-new-image">
-
-		<div class="container my_new_container257">
-
-			<div class="new_Des_abut">
-
-				<h2>An Amazing Program</h2>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati quasi, commodi dolore quis dolorum voluptatibus beatae minima non distinctio hic eos nobis earum ullam inventore velit odio perspiciatis quia placeat.</p>
-				<button class="get8798df">GET THIS APP</button>
-			</div>
-
-			<div class="img-site-487">
-
-				<img src="img/mobile-4487.gif" alt="logo"/>
-
-			</div>
-
-		</div>
-
-	</section>
-
-	<section class="review_section">
-
-		<div class="container">
-
-			<div class="main_image">
-
-				<div class="img-optional">
-
-					<img src="img/back_test.png" alt="logo"/>
-
-				</div>
-				<p class="review">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-
-				<div class="review_man">
-
-					<img src="img/my_Girls.jpg" alt="logo"/>
-					<div class="girl_description">
-						<h3>Jane Daya</h3>
-						<p>Customer</p>
-					</div>
-				</div>
-
-				<img class="quote_img" src="img/quote.png" alt="logo">
-
-			</div>
-
-
-
-		</div>
-
-	</section>
-
-	
-	<section id="last" class="last_section">
-
-		<div class="container flex-last">
-
-			<div class="left-side-last-element">
-
-				<h2>Support Payment From Every Plartform</h2>
-				<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-				<div class="left-description257oi">
-
-					<p class="payment_gateway">Supported Payment :</p>
-					<div class="payments-system">
-
-						<i aria-hidden="true" class="fab fa-cc-mastercard"></i>
-						<i aria-hidden="true" class="fab fa-cc-visa"></i>
-						<i aria-hidden="true" class="fab fa-cc-paypal"></i>
-						<i aria-hidden="true" class="fab fa-cc-stripe"></i>
-					</div>
-				</div>
-			</div>
-
-			<div class="right-side-last-element">
-
-				<div class="girls">
-
-					<img src="img/mobile-3.gif" alt="logo"/>
-
-				</div>
-
-				<!-- <div class="paypal-152">
-
-					<img src="img/paypal.png" alt="logo"/>
-					<img src="img/Last-Operation1.png" alt="logo"/>
-
-				</div> -->
-
-			</div>
-
-		</div>
-
-	</section>
-
-	<section class="faq_section">
-
-		<div class="container">	
-
-
-				<div class="FAQ-Header">
-
-					<h2>FAQ</h2>
-					<p>Get Your All Doubts Clear, Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, cupiditate.</p>
-
-				</div>
-
-				<div class="accordian">
-
-
-					<div class="box">
-						<!-- <p class="heading">FAQs</p> -->
-						<div class="faqs">
-						   <details>
-							  <summary>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda, ut ?</summary>
-							  <p class="text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dicta obcaecati nulla quae amet facere omnis a beatae reiciendis! Est, harum neque. Expedita explicabo perferendis vel.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda, ut </p>
-						   </details>
-						   <details>
-							  <summary>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis blanditiis adipisci sit ?</summary>
-							  <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores voluptas autem nobis officiis facere, non consequatur. Earum, rerum.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda, ut </p>
-						   </details>
-						   <details>
-							  <summary>What is Lorem ipsum and what did you mean by this pharse ?</summary>
-							  <p class="text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias quisquam repudiandae doloremque quas quis exercitationem in est architecto ex!Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda, ut </p>
-						   </details>
-						   <details>
-							<summary>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis blanditiis adipisci sit ?</summary>
-							<p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores voluptas autem nobis officiis facere, non consequatur. Earum, rerum.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda, ut </p>
-						 </details>
-						 <details>
-							<summary>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis blanditiis adipisci sit ?</summary>
-							<p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores voluptas autem nobis officiis facere, non consequatur. Earum, rerum.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda, ut </p>
-						 </details>
-
-						 <details>
-							<summary>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis blanditiis adipisci sit ?</summary>
-							<p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores voluptas autem nobis officiis facere, non consequatur. Earum, rerum.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda, ut </p>
-						 </details>
-
-						 <details>
-							<summary>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis blanditiis adipisci sit ?</summary>
-							<p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores voluptas autem nobis officiis facere, non consequatur. Earum, rerum.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda, ut </p>
-						 </details>
-						</div>
-					 </div>
-
-						<!-- <div class="accordian-item" id="qn1">
-
-							<a class="accordian-link" href="#qn1">Why use this app over other mobile app?
-
-								<i class="fas fa-bars"></i>
-								<i class="fas fa-times"></i>
-
-							</a>
-							<div class="answer">
-
-								<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni distinctio veniam quaerat natus explicabo dolorum, itaque commodi, libero molestias alias rerum? Officia quidem delectus facilis?</p>
-
-							</div>
-
-						</div>
-
-
-						<div class="accordian-item" id="qn2">
-
-							<a class="accordian-link" href="#qn2">Why use this app over other mobile app?
-
-								<i class="fas fa-bars"></i>
-								<i class="fas fa-times"></i>
-
-							</a>
-							<div class="answer">
-
-								<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni distinctio veniam quaerat natus explicabo dolorum, itaque commodi, libero molestias alias rerum? Officia quidem delectus facilis?</p>
-
-							</div>
-
-						</div>
-
-
-						<div class="accordian-item" id="qn3">
-
-							<a class="accordian-link" href="#qn3">Why use this app over other mobile app?
-
-								<i class="fas fa-bars"></i>
-								<i class="fas fa-times"></i>
-
-							</a>
-							<div class="answer">
-
-								<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni distinctio veniam quaerat natus explicabo dolorum, itaque commodi, libero molestias alias rerum? Officia quidem delectus facilis?</p>
-
-							</div>
-
-						</div>
-
-
-						<div class="accordian-item" id="qn4">
-
-							<a class="accordian-link" href="#qn4">Why use this app over other mobile app?
-
-								<i class="fas fa-bars"></i>
-								<i class="fas fa-times"></i>
-
-							</a>
-							<div class="answer">
-
-								<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni distinctio veniam quaerat natus explicabo dolorum, itaque commodi, libero molestias alias rerum? Officia quidem delectus facilis?</p>
-
-							</div>
-
-						</div>
-
-						<div class="accordian-item" id="qn5">
-
-							<a class="accordian-link" href="#qn5">Why use this app over other mobile app?
-
-								<i class="fas fa-bars"></i>
-								<i class="fas fa-times"></i>
-
-							</a>
-							<div class="answer">
-
-								<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni distinctio veniam quaerat natus explicabo dolorum, itaque commodi, libero molestias alias rerum? Officia quidem delectus facilis?</p>
-
-							</div>
-
-						</div>
-
-						<div class="accordian-item" id="qn6">
-
-							<a class="accordian-link" href="#qn6">Why use this app over other mobile app?
-
-								<i class="fas fa-bars"></i>
-								<i class="fas fa-times"></i>
-
-							</a>
-							<div class="answer">
-
-									<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni distinctio veniam quaerat natus explicabo dolorum, itaque commodi, libero molestias alias rerum? Officia quidem delectus facilis?</p>
-
-							</div>
-
-						</div> -->
-
-
-				</div>
- 
-		</div>
-
-	</section>
-
-	<section class="form-sections">
-
-		<div class="container flex-contianer">
-
-			<div class="messsage"><h2>Keep Updated About Our Product</h2></div>
-			<div class="form-s">
-
-				<form action="">
-					<div class="email-class">
-					<input type="email" placeholder="Enter Your Email"/>
-					</div>
-					<input type="submit" value="SUBMIT"/>
-				</form>
-
-			</div>
-		</div>
-
-	</section>
-
-	<footer id="bot">
-
-		<div class="container footer-container">
-			
-			<div class="side-1">
-
-				<img src="img/logo.png" alt="logo"/>
-				<p>One Application for Every Payment</p>
-				<i class="fab fa-apple"></i>
-				<i class="fab fa-google-play"></i>
-				<i class="fab fa-app-store"></i>
-
-			</div>
-
-			<div class="side-2">
-
-					<h4 style="color: #8176FF;">Other Pages</h4>
-					<ul>
-							<li><a href="#">Home</a></li>
-							<li><a href="#">ABOUT US</a></li>
-							<li><a href="#">SERVICES</a></li>
-							<li><a href="#">PROCESS</a></li>
-							<li><a href="#">DOWNLOAD</a></li>
-							<li><a href="#">PROJECT</a></li>
-
-					</ul>
-			</div>
-
-			<div class="side-3">
-
-				<h4 style="color: #8176FF;">Quick Links</h4>
-					<ul>
-							<li><a href="#">Privacy Policy</a></li>
-							<li><a href="#">Term of Services</a></li>
-							<li><a href="#">Disclaimer</a></li>
-							<li><a href="#">PROCESS</a></li>
-							<li><a href="#">Credits</a></li>
-							<li><a href="#">FAQ</a></li>
-							<li><a href="#">PROJECT</a></li>
-
-					</ul>
-
-			</div>
-
-			<div class="side-4">
-
-				<h4 style="color: #8176FF;">Social Links</h4>
-				<p>Our Support and Sales team is available 24 /7 to answer your queries</p>
-				<i class="fab fa-facebook"></i>
-				<i class="fab fa-twitter"></i>
-				<i class="fab fa-linkedin"></i>
-				<i class="fab fa-instagram"></i>
-
-			</div>
- 
-		</div>
-
-
-		<div class="container footer-border-bottom">
-
-			<p class="one-1">Izpay by Jegtheme</p>
-			<p class="one-2">Copyright © 2020. All rights reserved</p>
-
-		</div>
-
-	</footer>
-
-
-	<!--JavaScript Files-->
-	<script src="app.js"></script>
+<div id="game-container">
+    <canvas id="gameCanvas"></canvas>
+    
+    <div class="hud">
+        <div id="scoreDisplay">0</div>
+        <div id="highScoreDisplay" style="font-size: 18px; color: #eee; opacity: 0.8;">BEST: 0</div>
+    </div>
+
+    <!-- Start Menu -->
+    <div id="startMenu" class="ui-layer">
+        <div class="menu-overlay">
+            <h1 style="margin: 0; color: #f1c40f; font-size: 42px;">FLAPPY CS</h1>
+            <p>A Neural Network Evolution Demo</p>
+            <button onclick="game.start()">PLAY GAME</button>
+            <p style="font-size: 12px; margin-top: 15px; color: #aaa;">SPACE/CLICK to Jump | 'A' for AI Mode</p>
+        </div>
+    </div>
+
+    <!-- Ready Screen (The "Tap to Start" state) -->
+    <div id="readyScreen" class="ui-layer hidden">
+        <h2 style="font-size: 40px; text-shadow: 3px 3px 0 #000; margin-bottom: 80px;">GET READY</h2>
+        <div class="tap-indicator">TAP OR SPACE TO START</div>
+    </div>
+
+    <!-- Game Over -->
+    <div id="gameOverMenu" class="ui-layer hidden">
+        <div class="menu-overlay">
+            <h2 id="endStatus" style="color: #ff4757;">CRASHED!</h2>
+            <p id="finalScore" style="font-size: 24px;">Score: 0</p>
+            <button onclick="game.restart()">RETRY</button>
+        </div>
+    </div>
+
+    <div id="aiIndicator" class="ai-badge hidden">AI AUTOPILOT</div>
+</div>
+
+	<script src="./app.js"></script>
 </body>
 </html>
